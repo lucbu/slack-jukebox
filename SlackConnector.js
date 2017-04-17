@@ -34,8 +34,7 @@ function SlackConnector(command_handler) {
           // Getting the command in good shape
           var command = text.substr(prefix.length, (text.length - prefix.length)).trim();
 
-          if (command.startsWith('add')){
-            if('undefined' === typeof message.subtype){
+          if (command.startsWith('add') && 'undefined' === typeof message.subtype){
             // ########## ADD ##########
             item = command_handler.addUrlToPlaylist(
                 command.split(' ').pop().replace('<','').replace('>',''),
@@ -47,14 +46,9 @@ function SlackConnector(command_handler) {
                     }
                 }
               );
-            if('undefined' !== typeof item){
+            if('undefined' !== typeof item && null != item){
               followed_items[message.ts] = item;
             }
-          } else if ('message_deleted' == message.subtype) {
-            command_handler.deleteFromPlaylist(followed_items[message.previous_message.ts], function(){
-                delete followed_items[message.ts];
-            })
-          }
         } else if (command.startsWith('lalala') && 'undefined' === typeof message.subtype){
           item = command_handler.addUrlToPlaylist(
               "https://www.youtube.com/watch?v=QoPofJeWuR0",
@@ -66,10 +60,9 @@ function SlackConnector(command_handler) {
                   }
               }
             );
-          if('undefined' !== typeof item){
+          if('undefined' !== typeof item && null != item){
             followed_items[message.ts] = item;
           }
-
         } else if (command.startsWith('playing') && 'undefined' === typeof message.subtype){
             // ########## CURRENT ##########
             if('undefined' !== typeof command_handler.playlist.playing){
@@ -89,9 +82,15 @@ function SlackConnector(command_handler) {
             } else {
               rtm.sendMessage("No playlist set (Set a music with the command 'add')", message.channel);
             }
-          } else if (command.startsWith('playnext')){
+          } else if (command.startsWith('playnext') && 'undefined' === typeof message.subtype){
             console.log('force')
             command_handler.playNext();
+          } else if ('undefined' !== typeof message.subtype && 'message_deleted' == message.subtype) {
+            if(message.previous_message.ts in followed_items){
+              command_handler.deleteFromPlaylist(followed_items[message.previous_message.ts], function(){
+                  delete followed_items[message.ts];
+              })
+            }
           }
         }
       }
