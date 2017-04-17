@@ -32,6 +32,11 @@ config.dl_folder = 'music/';
 module.exports = config;
 </pre>
 
+Launch app:
+<pre>
+  node app.js
+</pre>
+
 ## Commands
 * @BOT-ID add http://link.to.youtube.video
 * @BOT-ID playing
