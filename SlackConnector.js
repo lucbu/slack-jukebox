@@ -73,9 +73,9 @@ function SlackConnector(command_handler) {
         } else if (command.startsWith('playing') && 'undefined' === typeof message.subtype){
             // ########## CURRENT ##########
             if('undefined' !== typeof command_handler.playlist.playing){
-              rtm.sendMessage("The music currently playing is ''" + command_handler.playlist.playing.sound.title+"'.", channel);
+              rtm.sendMessage("The music currently playing is ''" + command_handler.playlist.playing.sound.title+"'.", message.channel);
             } else {
-                rtm.sendMessage("No music playing (Set a music with the command 'add')", channel);
+                rtm.sendMessage("No music playing (Set a music with the command 'add')", message.channel);
             }
           } else if (command.startsWith('playlist') && 'undefined' === typeof message.subtype){
             // ########## PLAYLIST ##########
@@ -84,10 +84,10 @@ function SlackConnector(command_handler) {
                   command_handler.playlist.queue.map(function(item) {
                       return ' - ' + item.sound.title + ' (:+1:='+item.like+' / :-1:='+item.dislike+')' + ' by <@'+item.user_id+ '>';
                   }).join('\n'),
-                  channel
+                  message.channel
                 );
             } else {
-              rtm.sendMessage("No playlist set (Set a music with the command 'add')", channel);
+              rtm.sendMessage("No playlist set (Set a music with the command 'add')", message.channel);
             }
           } else if (command.startsWith('playnext')){
             console.log('force')
