@@ -1,0 +1,29 @@
+{
+  "name": "slack-jukebox",
+  "version": "1.0.0",
+  "description": "Play music by interfacing with slack. Allow people to add the music of their choice.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucbu/slack-jukebox.git"
+  },
+  "keywords": [
+    "slack",
+    "music",
+    "playlist"
+  ],
+  "author": "lucbu",
+  "bugs": {
+    "url": "https://github.com/lucbu/slack-jukebox/issues"
+  },
+  "homepage": "https://github.com/lucbu/slack-jukebox#readme",
+  "dependencies": {
+    "@slack/client": "^3.9.0",
+    "fs": "0.0.1-security",
+    "util": "^0.10.3",
+    "ytdl-core": "^0.12.1"
+  }
+}
