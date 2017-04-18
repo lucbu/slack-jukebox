@@ -3,7 +3,6 @@ var spawn = require('child_process').spawn;
 function Player() {
 //  console.log('Create Player');
   this.status = 'offair';
-  this.play = require('play-sound')(opts = {player: 'vlc'});
   audio = undefined;
 }
 

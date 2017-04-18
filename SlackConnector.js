@@ -25,9 +25,9 @@ function SlackConnector(command_handler) {
       if(channels.length == 0 || channels.indexOf(message.channel) != -1){
         // The prefix is the bot's id
         var prefix = '<@'+id+'>';
-        if(('undefined' === typeof message.subtype)){
+        if('undefined' === typeof message.subtype && 'undefined' !== message.text){
           var text = message.text;
-        } else {
+      } else if ('undefined' !== message.previous_message.text){
           text = message.previous_message.text;
         }
         if ('undefined' !== typeof text && text.startsWith(prefix)) {
