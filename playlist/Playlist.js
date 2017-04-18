@@ -1,3 +1,5 @@
+var os = require('os');
+
 function Playlist(player) {
 //  console.log('Create Playlist');
     this.player = player;
@@ -20,7 +22,7 @@ Playlist.prototype.playNext = function(force){
   }
   if(force){
     this.queue.shift();
-    var isWin = /^win/.test(process.platform);
+    var isWin = /^win/.test(os.platform());
     if(!isWin) {
         this.player.audio.kill('SIGKILL');
     } else {
