@@ -20,10 +20,13 @@ Playlist.prototype.playNext = function(force){
   }
   if(force){
     this.queue.shift();
-    this.player.audio.kill('SIGINT');
-    this.player.audio.kill('SIGHUP');
-    this.player.audio.kill('SIGBREAK');
-    this.player.audio.kill('SIGKILL');
+    var isWin = /^win/.test(process.platform);
+    if(!isWin) {
+        this.player.audio.kill('SIGKILL');
+    } else {
+        var cp = require('child_process');
+        cp.exec('taskkill /PID ' + this.player.audio.pid + ' /T /F', function (error, stdout, stderr) {});
+    }
     this.player.status = 'offair'
   }
   var playlist = this;
