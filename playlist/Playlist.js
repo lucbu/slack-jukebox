@@ -20,10 +20,10 @@ Playlist.prototype.playNext = function(force){
   }
   if(force){
     this.queue.shift();
-    this.player.audio.kill('SIGKILL');
     this.player.audio.kill('SIGINT');
     this.player.audio.kill('SIGHUP');
     this.player.audio.kill('SIGBREAK');
+    this.player.audio.kill('SIGKILL');
     this.player.status = 'offair'
   }
   var playlist = this;
