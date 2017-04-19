@@ -33,6 +33,7 @@ Playlist.prototype.playNext = function(force){
   }
   var playlist = this;
   var next = this.queue[0];
+  this.playing = undefined;
   if('undefined' !== typeof next){
     if(next.like >= next.dislike){
       this.playing = next;
@@ -42,7 +43,6 @@ Playlist.prototype.playNext = function(force){
         if('undefined' !== next.endPlaying){
           next.endPlaying()
         }
-        this.playing = undefined;
         playlist.playNext();
       });
     } else {

@@ -14,7 +14,7 @@ Player.prototype.playSound = function(sound, cb) {
       console.log('Start music "' + sound.title + '"');
       player.status = 'onair';
       console.log(sound.filename)
-      player.audio = spawn('vlc', [sound.filename, '-I dummy', '--play-and-exit']);
+      player.audio = spawn('vlc', [sound.filename, '--intf="dummy"', '--play-and-exit']);
       player.audio.on('exit', function(code){
           console.log('End music ' + sound.filename);
           player.status = 'offair'
