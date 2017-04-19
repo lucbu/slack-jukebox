@@ -63,6 +63,12 @@ function SlackConnector(command_handler) {
           if('undefined' !== typeof item && null != item){
             followed_items[message.ts] = item;
           }
+        } else if (command == 'play' && 'undefined' === typeof message.subtype){
+          command_handler.play();
+        } else if (command == 'pause' && 'undefined' === typeof message.subtype){
+          command_handler.pause();
+        } else if (command.startsWith('volume ') && 'undefined' === typeof message.subtype){
+          command_handler.volume(command.split(' ').pop());
         } else if (command.startsWith('playing') && 'undefined' === typeof message.subtype){
             // ########## CURRENT ##########
             if('undefined' !== typeof command_handler.playlist.playing){

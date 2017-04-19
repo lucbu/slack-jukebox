@@ -45,6 +45,33 @@ CommandHandler.prototype.addUrlToPlaylist = function (url, provider, user_id, en
   return null;
 };
 
+CommandHandler.prototype.pause = function() {
+  if('undefined' !== typeof this.playlist.player.audio){
+    this.playlist.player.audio.stdin.write('pause\n');
+  }
+};
+
+CommandHandler.prototype.play = function() {
+  if('undefined' !== typeof this.playlist.player.audio){
+    this.playlist.player.audio.stdin.write('play\n');
+  }
+};
+
+CommandHandler.prototype.volume = function(volume) {
+  if('undefined' !== typeof this.playlist.player.audio){
+    if(!isNaN(volume)){
+      var vol = parseInt(volume);
+      if(vol >= 0 && vol <= 100){
+        this.playlist.player.audio.stdin.write('volume ' + vol + '\n');
+      }
+    } else if (volume == 'up') {
+        this.playlist.player.audio.stdin.write('volup\n');
+    } else if (volume == 'down') {
+        this.playlist.player.audio.stdin.write('voldown\n');
+    }
+  }
+};
+
 CommandHandler.prototype.deleteFromPlaylist = function(item, cb) {
   var index = this.playlist.queue.indexOf(item);
   if (index > -1) {

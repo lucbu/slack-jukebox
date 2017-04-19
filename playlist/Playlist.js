@@ -21,14 +21,10 @@ Playlist.prototype.playNext = function(force){
         force=false;
     }
     if(force){
-        var isWin = /^win/.test(os.platform());
-        if(!isWin) {
-            this.player.audio.kill('SIGKILL');
-        } else {
-            var cp = require('child_process');
-            cp.exec('taskkill /PID ' + this.player.audio.pid + ' /T /F', function (error, stdout, stderr) {});
-        }
-        this.player.status = 'offair'
+      if('undefined' !== typeof this.player.audio){
+        this.player.audio.stdin.write('quit\n');
+      }
+      this.player.status = 'offair'
     } else{
     var playlist = this;
     var next = this.queue[0];

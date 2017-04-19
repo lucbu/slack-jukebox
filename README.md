@@ -42,7 +42,14 @@ Launch app:
 * @BOT-ID playing
 * @BOT-ID playlist
 * @BOT-ID playnext
+* @BOT-ID play
+* @BOT-ID pause
+* @BOT-ID volume up
+* @BOT-ID volume down
+* @BOT-ID volume X (0<X<100)
+* @BOT-ID volume X (0<X<100)
 
 ## TODO
 * democratic playnext
+* full integration with VLC interface RC?
 * refactor code
