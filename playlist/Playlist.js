@@ -21,7 +21,6 @@ Playlist.prototype.playNext = function(force){
         force=false;
     }
     if(force){
-        this.queue.shift();
         var isWin = /^win/.test(os.platform());
         if(!isWin) {
             this.player.audio.kill('SIGKILL');
@@ -30,28 +29,28 @@ Playlist.prototype.playNext = function(force){
             cp.exec('taskkill /PID ' + this.player.audio.pid + ' /T /F', function (error, stdout, stderr) {});
         }
         this.player.status = 'offair'
-    } else {
-        var playlist = this;
-        var next = this.queue[0];
-        this.playing = undefined;
-        if('undefined' !== typeof next){
-            if(next.like >= next.dislike){
-                this.playing = next;
-                this.player.playSound(next.sound, function(){
-                    playlist.queue.shift();
-                    next.sound.deleteFile();
-                    if('undefined' !== next.endPlaying){
-                        next.endPlaying()
-                    }
-                    playlist.playNext();
-                });
-            } else {
-                this.queue.shift();
+    } else{
+    var playlist = this;
+    var next = this.queue[0];
+    if('undefined' !== typeof next){
+        if(next.like >= next.dislike){
+            this.playing = next;
+            this.player.playSound(next.sound, function(){
+                playlist.queue.shift();
                 next.sound.deleteFile();
-                this.playNext();
-            }
+                if('undefined' !== next.endPlaying){
+                    next.endPlaying()
+                }
+                this.playing = undefined;
+                playlist.playNext();
+            });
+        } else {
+            this.queue.shift();
+            next.sound.deleteFile();
+            this.playNext();
         }
     }
+}
 }
 
 module.exports = Playlist;
