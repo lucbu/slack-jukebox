@@ -1,5 +1,6 @@
 var YoutubeSound = require('./sound/YoutubeSound.js');
 var PlaylistItem = require('./playlist/PlaylistItem.js');
+var os = require('os');
 
 function CommandHandler(playlist) {
   this.playlist = playlist;
@@ -47,13 +48,13 @@ CommandHandler.prototype.addUrlToPlaylist = function (url, provider, user_id, en
 
 CommandHandler.prototype.pause = function() {
   if('undefined' !== typeof this.playlist.player.audio){
-    this.playlist.player.audio.stdin.write('pause\n');
+    this.playlist.player.audio.stdin.write('pause' + os.EOL);
   }
 };
 
 CommandHandler.prototype.play = function() {
   if('undefined' !== typeof this.playlist.player.audio){
-    this.playlist.player.audio.stdin.write('play\n');
+    this.playlist.player.audio.stdin.write('play' + os.EOL);
   }
 };
 
@@ -62,12 +63,12 @@ CommandHandler.prototype.volume = function(volume) {
     if(!isNaN(volume)){
       var vol = parseInt(volume);
       if(vol >= 0 && vol <= 100){
-        this.playlist.player.audio.stdin.write('volume ' + vol + '\n');
+        this.playlist.player.audio.stdin.write('volume ' + vol + os.EOL);
       }
     } else if (volume == 'up') {
-        this.playlist.player.audio.stdin.write('volup\n');
+        this.playlist.player.audio.stdin.write('volup' + os.EOL);
     } else if (volume == 'down') {
-        this.playlist.player.audio.stdin.write('voldown\n');
+        this.playlist.player.audio.stdin.write('voldown' + os.EOL);
     }
   }
 };

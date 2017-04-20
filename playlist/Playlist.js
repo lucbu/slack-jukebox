@@ -22,7 +22,7 @@ Playlist.prototype.playNext = function(force){
     }
     if(force){
       if('undefined' !== typeof this.player.audio){
-        this.player.audio.stdin.write('quit\n');
+        this.player.audio.stdin.write('quit' + os.EOL);
       }
       this.player.status = 'offair'
     } else{
