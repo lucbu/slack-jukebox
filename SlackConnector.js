@@ -63,6 +63,20 @@ function SlackConnector(command_handler) {
           if('undefined' !== typeof item && null != item){
             followed_items[message.ts] = item;
           }
+      } else if (command.startsWith('papayou') && 'undefined' === typeof message.subtype){
+          item = command_handler.addUrlToPlaylist(
+              "https://www.youtube.com/watch?v=fyAban5uKWY",
+              'slack',
+              message.user,
+              function(){
+                  if('undefined' !== followed_items[message.ts]){
+                    delete followed_items[message.ts];
+                  }
+              }
+            );
+          if('undefined' !== typeof item && null != item){
+            followed_items[message.ts] = item;
+          }
         } else if (command.startsWith('playing') && 'undefined' === typeof message.subtype){
             // ########## CURRENT ##########
             if('undefined' !== typeof command_handler.playlist.playing){
