@@ -62,7 +62,7 @@ CommandHandler.prototype.volume = function(volume) {
   if('undefined' !== typeof this.playlist.player.audio){
     if(!isNaN(volume)){
       var vol = parseInt(volume);
-      if(vol >= 0 && vol <= 100){
+      if(vol >= 0 && vol <= 256){
         this.playlist.player.audio.stdin.write('volume ' + vol + os.EOL);
       }
     } else if (volume == 'up') {

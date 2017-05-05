@@ -2,6 +2,8 @@ var RtmClient = require('@slack/client').RtmClient;
 var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 var config = require('./config.js');
+var Helper = require('./Helper.js');
+var helper = new Helper();
 
 
 function SlackConnector(command_handler) {
@@ -14,7 +16,7 @@ function SlackConnector(command_handler) {
     var followed_items = {};
 
     rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-        console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+        console.log('Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel');
         id = rtmStartData.self.id;
     });
 
@@ -86,16 +88,16 @@ function SlackConnector(command_handler) {
                     } else if (command.startsWith('playing') && 'undefined' === typeof message.subtype){
                         // ########## CURRENT ##########
                         if('undefined' !== typeof command_handler.playlist.playing){
-                            rtm.sendMessage("The music currently playing is ''" + command_handler.playlist.playing.sound.title+"'.", message.channel);
+                            rtm.sendMessage("The music currently playing is ''" + command_handler.playlist.playing.sound.title+"'. [" + helper.hmsTimeFormat(item.sound.length) + "]", message.channel);
                         } else {
                             rtm.sendMessage("No music playing (Set a music with the command 'add')", message.channel);
                         }
                     } else if (command.startsWith('playlist') && 'undefined' === typeof message.subtype){
                         // ########## PLAYLIST ##########
                         if(command_handler.playlist.queue.length > 0){
-                            rtm.sendMessage(
+                            rtm.sendMessage( 'Total Length : [' + helper.hmsTimeFormat(command_handler.playlist.totalLength()) + ']\n' +
                                 command_handler.playlist.queue.map(function(item) {
-                                    return ' - ' + item.sound.title + ' (:+1:='+item.like+' / :-1:='+item.dislike+')' + ' by <@'+item.user_id+ '>';
+                                    return ' - ' + item.sound.title + ' (:+1:='+item.like+' / :-1:='+item.dislike+')' + '[' + helper.hmsTimeFormat(item.sound.length) + ']' + ' by <@'+item.user_id+ '>';
                                 }).join('\n'),
                                 message.channel
                             );

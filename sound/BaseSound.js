@@ -3,6 +3,7 @@ function BaseSound(url) {
     this.filename = undefined
     this.url = undefined;
     this.title = undefined;
+    this.length = 0;
     this.checkAndSetUrl(url);
     this.downloading = undefined;
 }

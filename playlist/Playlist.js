@@ -21,32 +21,41 @@ Playlist.prototype.playNext = function(force){
         force=false;
     }
     if(force){
-      if('undefined' !== typeof this.player.audio){
-        this.player.audio.stdin.write('quit' + os.EOL);
-      }
-      this.player.status = 'offair'
+        if('undefined' !== typeof this.player.audio){
+            this.player.audio.stdin.write('quit' + os.EOL);
+        }
+        this.player.status = 'offair'
     } else{
-    var playlist = this;
-    var next = this.queue[0];
-    if('undefined' !== typeof next){
-        if(next.like >= next.dislike){
-            this.playing = next;
-            this.player.playSound(next.sound, function(){
-                playlist.queue.shift();
+        var playlist = this;
+        var next = this.queue[0];
+        if('undefined' !== typeof next){
+            if(next.like >= next.dislike){
+                this.playing = next;
+                this.player.playSound(next.sound, function(){
+                    playlist.queue.shift();
+                    next.sound.deleteFile();
+                    if('undefined' !== next.endPlaying){
+                        next.endPlaying()
+                    }
+                    this.playing = undefined;
+                    playlist.playNext();
+                });
+            } else {
+                this.queue.shift();
                 next.sound.deleteFile();
-                if('undefined' !== next.endPlaying){
-                    next.endPlaying()
-                }
-                this.playing = undefined;
-                playlist.playNext();
-            });
-        } else {
-            this.queue.shift();
-            next.sound.deleteFile();
-            this.playNext();
+                this.playNext();
+            }
         }
     }
 }
+
+Playlist.prototype.totalLength = function(){
+    var total_length = 0;
+    for (var i in this.queue) {
+        item = this.queue[i]
+        total_length += item.sound.length;
+    }
+    return total_length;
 }
 
 module.exports = Playlist;

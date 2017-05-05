@@ -29,7 +29,10 @@ YoutubeSound.prototype.downloadFile = function(cb) {
     sound.file = file;
     var sound = this;
     ytdl.getInfo(this.url, this.filter, function(a, b){
-        sound.title = b.title
+        sound.title = b.title;
+          if(!isNaN(b.length_seconds)){
+            sound.length = parseInt(b.length_seconds);
+        }
     })
     this.downloading = ytdl(this.url, this.filter);
     this.downloading.pipe(fs.createWriteStream(file))
