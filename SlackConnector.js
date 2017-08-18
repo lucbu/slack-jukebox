@@ -44,7 +44,15 @@ function SlackConnector(command_handler) {
                             item = command_handler.addUrlToPlaylist(
                                 url,
                                 'slack',
-                                message.user
+                                message.user,
+                                function(){
+                                    if('undefined' !== followed_items[message.ts]){
+                                        if(followed_items[message.ts].length > 0){
+                                        } else {
+                                            delete followed_items[message.ts];
+                                        }
+                                    }
+                                }
                             );
                             if('undefined' !== typeof item && null != item){
                                 if('undefined' === typeof followed_items[message.ts]){
@@ -70,53 +78,53 @@ function SlackConnector(command_handler) {
                         // ########## PLAYLIST ##########
                         if(command_handler.playlist.queue.length > 0){
                             rtm.sendMessage( 'Total Length : [' + helper.hmsTimeFormat(command_handler.playlist.totalLength()) + ']\n' +
-                                command_handler.playlist.queue.map(function(item) {
-                                    return ' - ' + item.sound.title + ' (:+1:='+item.like+' / :-1:='+item.dislike+')' + '[' + helper.hmsTimeFormat(item.sound.length) + ']' + ' by <@'+item.user_id+ '>';
-                                }).join('\n'),
-                                message.channel
-                            );
-                        } else {
-                            rtm.sendMessage("No playlist set (Set a music with the command 'add')", message.channel);
-                        }
-                    } else if (command.startsWith('playnext') && 'undefined' === typeof message.subtype){
-                        console.log('force')
-                        command_handler.playNext();
-                    } else if ('undefined' !== typeof message.subtype && 'message_deleted' == message.subtype) {
-                        if(message.previous_message.ts in followed_items){
-                            command_handler.deleteFromPlaylist(followed_items[message.previous_message.ts], function(){
-                                delete followed_items[message.ts];
-                            })
-                        }
+                            command_handler.playlist.queue.map(function(item) {
+                                return ' - ' + item.sound.title + ' (:+1:='+item.like+' / :-1:='+item.dislike+')' + '[' + helper.hmsTimeFormat(item.sound.length) + ']' + ' by <@'+item.user_id+ '>';
+                            }).join('\n'),
+                            message.channel
+                        );
+                    } else {
+                        rtm.sendMessage("No playlist set (Set a music with the command 'add')", message.channel);
+                    }
+                } else if (command.startsWith('playnext') && 'undefined' === typeof message.subtype){
+                    console.log('force')
+                    command_handler.playNext();
+                } else if ('undefined' !== typeof message.subtype && 'message_deleted' == message.subtype) {
+                    if(message.previous_message.ts in followed_items){
+                        command_handler.deleteFromPlaylist(followed_items[message.previous_message.ts], function(){
+                            delete followed_items[message.ts];
+                        })
                     }
                 }
             }
-        })
-    }, 3000);
-
-    rtm.on(RTM_EVENTS.REACTION_ADDED, function (reaction) {
-        if(reaction.item.type == 'message'){
-            if (reaction.item.ts in followed_items){
-                if(reaction.reaction == '+1'){
-                    command_handler.addLike(followed_items[reaction.item.ts]);
-                } else if (reaction.reaction == '-1'){
-                    command_handler.addDislike(followed_items[reaction.item.ts]);
-                }
-            }
         }
     })
-    rtm.on(RTM_EVENTS.REACTION_REMOVED, function (reaction) {
-        if(reaction.item.type == 'message'){
-            if (reaction.item.ts in followed_items){
-                if(reaction.reaction == '+1'){
-                    command_handler.removeLike(followed_items[reaction.item.ts]);
-                } else if (reaction.reaction == '-1'){
-                    command_handler.removeDislike(followed_items[reaction.item.ts]);
-                }
+}, 3000);
+
+rtm.on(RTM_EVENTS.REACTION_ADDED, function (reaction) {
+    if(reaction.item.type == 'message'){
+        if (reaction.item.ts in followed_items){
+            if(reaction.reaction == '+1'){
+                command_handler.addLike(followed_items[reaction.item.ts]);
+            } else if (reaction.reaction == '-1'){
+                command_handler.addDislike(followed_items[reaction.item.ts]);
             }
         }
-    })
+    }
+})
+rtm.on(RTM_EVENTS.REACTION_REMOVED, function (reaction) {
+    if(reaction.item.type == 'message'){
+        if (reaction.item.ts in followed_items){
+            if(reaction.reaction == '+1'){
+                command_handler.removeLike(followed_items[reaction.item.ts]);
+            } else if (reaction.reaction == '-1'){
+                command_handler.removeDislike(followed_items[reaction.item.ts]);
+            }
+        }
+    }
+})
 
-    rtm.start(false);
+rtm.start(false);
 }
 
 module.exports = SlackConnector;

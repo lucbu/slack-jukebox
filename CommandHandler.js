@@ -29,7 +29,7 @@ CommandHandler.prototype.addDislike = function (playlist_items) {
     });
 };
 
-CommandHandler.prototype.removeDislike = function (playlist_item) {
+CommandHandler.prototype.removeDislike = function (playlist_items) {
     playlist_items.forEach(function(playlist_item){
         if(playlist_item.dislike > 0){
             playlist_item.dislike = playlist_item.dislike - 1;
@@ -81,14 +81,17 @@ CommandHandler.prototype.volume = function(volume) {
     }
 };
 
-CommandHandler.prototype.deleteFromPlaylist = function(item, cb) {
-    var index = this.playlist.queue.indexOf(item);
-    if (index > -1) {
-        this.playlist.queue.splice(index, 1);
-        if('undefined' !== cb){
-            cb()
+CommandHandler.prototype.deleteFromPlaylist = function(items, cb) {
+    var self = this;
+    items.forEach(function(item){
+        var index = self.playlist.queue.indexOf(item);
+        if (index > -1) {
+            self.playlist.queue.splice(index, 1);
+            if('undefined' !== cb){
+                cb()
+            }
         }
-    }
+    });
 }
 
 module.exports = CommandHandler;
