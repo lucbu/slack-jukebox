@@ -18,14 +18,13 @@ YoutubeSound.prototype.checkAndSetUrl = function(url) {
   if (match === null){
     throw new Error('The Url is not good');
   }
-  is_error = false;
   var is_error = false;
   ytdl.getInfo(url, this.filter, function(a, b){
         if('undefined' === typeof b){
-            error = true;
+            is_error = true;
       }
   })
-  if(error){
+  if(is_error){
         throw new Error('The Url is not good');
   }
   this.url = url;
