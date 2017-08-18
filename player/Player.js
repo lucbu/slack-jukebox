@@ -17,6 +17,7 @@ Player.prototype.playSound = function(sound, cb) {
       player.audio = spawn('vlc', [sound.filename, '--intf' ,'rc', '--play-and-exit']);
       player.audio.on('exit', function(code){
           console.log('End music ' + sound.filename);
+          delete player.audio;
           player.status = 'offair'
           if('undefined' !== typeof cb) {
               cb();

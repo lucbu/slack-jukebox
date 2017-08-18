@@ -44,7 +44,11 @@ CommandHandler.prototype.playNext = function(){
 CommandHandler.prototype.addUrlToPlaylist = function (url, provider, user_id, endPlaying) {
     var sound = undefined;
     if(url.match(this.url_regex['youtube']) !== null){
-        var sound = new YoutubeSound(url);
+        try {
+            var sound = new YoutubeSound(url);
+        }catch (err) {
+            console.log(url + ' is not good')
+        }
     }
     if('undefined' !== typeof sound) {
         var item = new PlaylistItem(sound, provider, user_id, endPlaying);
