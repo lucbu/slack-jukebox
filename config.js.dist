@@ -1,7 +1,9 @@
 var config = {};
 
-config.slack_token = "BOT-TOKEN";
-config.slack_channels = [];
 config.dl_folder = 'music/';
+
+config.slack = {};
+config.slack.token = "BOT-TOKEN";
+config.slack.channels = [];
 
 module.exports = config;

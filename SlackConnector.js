@@ -8,8 +8,8 @@ var helper = new Helper();
 
 function SlackConnector(command_handler) {
     this.command_handler = command_handler;
-    var bot_token = config.slack_token;
-    var channels = config.slack_channels;
+    var bot_token = config.slack.token;
+    var channels = config.slack.channels;
     var rtm = new RtmClient(bot_token);
     var id = undefined;
     var logtime = undefined;
