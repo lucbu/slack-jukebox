@@ -1,6 +1,7 @@
 var YoutubeSound = require('./sound/YoutubeSound.js');
 var PlaylistItem = require('./playlist/PlaylistItem.js');
 var os = require('os');
+var config = require('./config.js');
 
 function CommandHandler(playlist) {
     this.playlist = playlist;
@@ -38,7 +39,10 @@ CommandHandler.prototype.removeDislike = function (playlist_items) {
 };
 
 CommandHandler.prototype.playNext = function(){
-    this.playlist.playNext(true);
+    if(!'undefined' !== typeof config.allow_playnext && config.allow_playnext){
+        console.log('playnext')
+        this.playlist.playNext(true);
+    }
 }
 
 CommandHandler.prototype.addUrlToPlaylist = function (url, provider, user_id, endPlaying) {

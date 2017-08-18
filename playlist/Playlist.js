@@ -22,7 +22,6 @@ Playlist.prototype.playNext = function(force){
     }
     if(force){
         if('undefined' !== typeof this.player.audio){
-            console.log('lol');
             this.player.audio.stdin.write('quit' + os.EOL);
         }
         this.player.status = 'offair'

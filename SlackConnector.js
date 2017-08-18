@@ -87,7 +87,6 @@ function SlackConnector(command_handler) {
                         rtm.sendMessage("No playlist set (Set a music with the command 'add')", message.channel);
                     }
                 } else if (command.startsWith('playnext') && 'undefined' === typeof message.subtype){
-                    console.log('force')
                     command_handler.playNext();
                 } else if ('undefined' !== typeof message.subtype && 'message_deleted' == message.subtype) {
                     if(message.previous_message.ts in followed_items){

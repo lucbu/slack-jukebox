@@ -1,6 +1,7 @@
 var config = {};
 
 config.dl_folder = 'music/';
+config.allow_playnext = false;
 
 config.slack = {};
 config.slack.token = "BOT-TOKEN";
