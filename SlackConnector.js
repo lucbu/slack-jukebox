@@ -44,45 +44,15 @@ function SlackConnector(command_handler) {
                             item = command_handler.addUrlToPlaylist(
                                 url,
                                 'slack',
-                                message.user,
-                                function(){
-                                    if('undefined' !== followed_items[message.ts]){
-                                        delete followed_items[message.ts];
-                                    }
-                                }
+                                message.user
                             );
+                            if('undefined' !== typeof item && null != item){
+                                if('undefined' === typeof followed_items[message.ts]){
+                                    followed_items[message.ts] = []
+                                }
+                                followed_items[message.ts].push(item);
+                            }
                         })
-                        if('undefined' !== typeof item && null != item){
-                            followed_items[message.ts] = item;
-                        }
-                    } else if (command.startsWith('lalala') && 'undefined' === typeof message.subtype){
-                        item = command_handler.addUrlToPlaylist(
-                            "https://www.youtube.com/watch?v=QoPofJeWuR0",
-                            'slack',
-                            message.user,
-                            function(){
-                                if('undefined' !== followed_items[message.ts]){
-                                    delete followed_items[message.ts];
-                                }
-                            }
-                        );
-                        if('undefined' !== typeof item && null != item){
-                            followed_items[message.ts] = item;
-                        }
-                    } else if (command.startsWith('papayou') && 'undefined' === typeof message.subtype){
-                        item = command_handler.addUrlToPlaylist(
-                            "https://www.youtube.com/watch?v=fyAban5uKWY",
-                            'slack',
-                            message.user,
-                            function(){
-                                if('undefined' !== followed_items[message.ts]){
-                                    delete followed_items[message.ts];
-                                }
-                            }
-                        );
-                        if('undefined' !== typeof item && null != item){
-                            followed_items[message.ts] = item;
-                        }
                     } else if (command == 'play' && 'undefined' === typeof message.subtype){
                         command_handler.play();
                     } else if (command == 'pause' && 'undefined' === typeof message.subtype){
