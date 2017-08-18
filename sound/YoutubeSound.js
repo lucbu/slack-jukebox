@@ -18,12 +18,16 @@ YoutubeSound.prototype.checkAndSetUrl = function(url) {
   if (match === null){
     throw new Error('The Url is not good');
   }
+  is_error = false;
   var is_error = false;
   ytdl.getInfo(url, this.filter, function(a, b){
         if('undefined' === typeof b){
-          throw new Error('The Url is not good');
+            error = true;
       }
   })
+  if(error){
+        throw new Error('The Url is not good');
+  }
   this.url = url;
   this.filename = config.dl_folder + "/youtube-" + match[5] + "-" + new Date().getTime() + ".mp4";
 }
