@@ -9,7 +9,8 @@ var helper = new Helper();
 function SlackConnector(command_handler) {
     this.command_handler = command_handler;
     var bot_token = config.slack.token;
-    var channels = config.slack.channels;
+    var channels = 'undefined' !== typeof config.slack.channels ? config.slack.channels : [];
+    var aliases = 'undefined' !== typeof config.slack.aliases ? config.slack.aliases : {};
     var rtm = new RtmClient(bot_token);
     var id = undefined;
     var logtime = undefined;
@@ -35,6 +36,8 @@ function SlackConnector(command_handler) {
                 if ('undefined' !== typeof text && text.startsWith(prefix)) {
                     // Getting the command in good shape
                     var command = text.substr(prefix.length, (text.length - prefix.length)).trim();
+                    // Check if their is alias
+                    var command = 'undefined' !== typeof aliases[command] ? aliases[command] : command;
 
                     if (command.startsWith('add') && 'undefined' === typeof message.subtype){
                         var urls = command.split(' add ').pop().split(' ')

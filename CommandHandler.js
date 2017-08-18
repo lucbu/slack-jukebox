@@ -39,7 +39,7 @@ CommandHandler.prototype.removeDislike = function (playlist_items) {
 };
 
 CommandHandler.prototype.playNext = function(){
-    if(!'undefined' !== typeof config.allow_playnext && config.allow_playnext){
+    if('undefined' !== typeof config.allow_playnext && config.allow_playnext){
         console.log('playnext')
         this.playlist.playNext(true);
     }
