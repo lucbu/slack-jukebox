@@ -37,17 +37,21 @@ function SlackConnector(command_handler) {
                     var command = text.substr(prefix.length, (text.length - prefix.length)).trim();
 
                     if (command.startsWith('add') && 'undefined' === typeof message.subtype){
-                        // ########## ADD ##########
-                        item = command_handler.addUrlToPlaylist(
-                            command.split(' ').pop().replace('<','').replace('>',''),
-                            'slack',
-                            message.user,
-                            function(){
-                                if('undefined' !== followed_items[message.ts]){
-                                    delete followed_items[message.ts];
+                        var urls = command.split(' add ').pop().split(' ')
+                        urls.forEach(function(value){
+                            var url = value.replace('<','').replace('>','');
+                            // ########## ADD ##########
+                            item = command_handler.addUrlToPlaylist(
+                                url,
+                                'slack',
+                                message.user,
+                                function(){
+                                    if('undefined' !== followed_items[message.ts]){
+                                        delete followed_items[message.ts];
+                                    }
                                 }
-                            }
-                        );
+                            );
+                        })
                         if('undefined' !== typeof item && null != item){
                             followed_items[message.ts] = item;
                         }
