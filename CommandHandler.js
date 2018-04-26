@@ -19,15 +19,15 @@ CommandHandler.prototype.updateSample = function(url, sampleId, timeRange, botRe
     sound.filename = config.samples_folder + sampleId;
     sound.timeRange = timeRange;
 
-    botReply("Création du son *"+sampleId+"* en cours...");
+    botReply("Crafting sound *"+sampleId+"* in progress...");
     sound.downloadFile(function() {
-        botReply("Création du son *"+sampleId+"* terminée !");
+        botReply("Sound *"+sampleId+"* is ready!");
     });
 };
 
 CommandHandler.prototype.deleteSample = function(sampleId, botReply) {
     SampleManager.deleteSampleById(sampleId, function(filename) {
-        botReply("Suppression du son *"+sampleId+"* effectuée.");
+        botReply("Delete sound *"+sampleId+"*: OK");
     });
 };
 
@@ -46,9 +46,13 @@ CommandHandler.prototype.listSamples = function(botReply) {
     SampleManager.listSamples(function(sampleList) {
         var output = "";
 
-        sampleList.forEach(function(sample) {
-            output += "- "+sample + "\n";
-        });
+        if (typeof sampleList !== "undefined") {
+            sampleList.forEach(function(sample) {
+                output += "- "+sample + "\n";
+            });
+        } else {
+            output = "Empty list"
+        }
 
         botReply(output);
     });
