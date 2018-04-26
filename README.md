@@ -51,11 +51,11 @@ Launch app:
 * @BOT-ID volume X (0<X<100)
 
 ## New commands
-* @BOT-ID install [Youtube URL] [Sound's ID (a-z0-9_)] [Start 00:00] [End 00:00] - Start and End are optional',
-* @BOT-ID list',
-* @BOT-ID send [Sound's ID]',
-* @BOT-ID uninstall [Sound's ID] [Password]',
-* @BOT-ID help'
+* @BOT-ID install [Youtube URL] [Sound's ID (a-z0-9_)] [Start 00:00] [End 00:00] - Start and End are optional
+* @BOT-ID list
+* @BOT-ID send [Sound's ID]
+* @BOT-ID uninstall [Sound's ID] [Password]
+* @BOT-ID help
 
 ## TODO
 * democratic playnext
