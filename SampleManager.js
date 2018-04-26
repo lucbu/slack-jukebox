@@ -19,11 +19,21 @@ var listSamples = function(callback) {
 };
 
 var deleteSampleByFullname = function(fullname, cb) {
-    findSampleByFullname(fullname, cb)
+    findSampleByFullname(fullname, function() {
+        fs.unlink(fullname, cb);
+    });
+};
+
+var deleteSampleById = function(sampleId, cb) {
+    findSampleById(sampleId, function(fullname) {
+        fs.unlink(fullname, cb);
+    });
 };
 
 module.exports = {
     deleteSampleByFullname: deleteSampleByFullname,
+    deleteSampleById: deleteSampleById,
+    findSampleByFullname: findSampleByFullname,
     findSampleById: findSampleById,
     listSamples: listSamples
 };

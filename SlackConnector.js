@@ -59,7 +59,19 @@ function SlackConnector(command_handler) {
                             }
                         }
 
-                    } else if (command.startsWith('send') && 'undefined' === typeof message.subtype) {
+                    } else if (command.startsWith('uninstall') && 'undefined' === typeof message.subtype) {
+                        var argsUninstall = command.split('uninstall ').pop().split(' ');
+
+                        if (argsUninstall.length == 2) {
+                            var sampleIdToUninstall = argsUninstall[0];
+                            var softpassword = argsUninstall[1];
+
+                            if (softpassword == 'jierluc') {
+                                command_handler.deleteSample(sampleIdToUninstall, botReply);
+                            }
+                        }
+
+                    }  else if (command.startsWith('send') && 'undefined' === typeof message.subtype) {
                         var argsPlay = command.split('send ').pop().split(' ');
 
                         if (argsPlay.length == 1) {
@@ -69,7 +81,7 @@ function SlackConnector(command_handler) {
                             });
                         }
 
-                    }  else if (command.startsWith('list') && 'undefined' === typeof message.subtype) {
+                    } else if (command.startsWith('list') && 'undefined' === typeof message.subtype) {
                         command_handler.listSamples(botReply);
                     } else if (command.startsWith('add') && 'undefined' === typeof message.subtype) {
                         var urls = command.split(' add ').pop().split(' ');

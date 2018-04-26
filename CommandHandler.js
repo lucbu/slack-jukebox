@@ -21,6 +21,11 @@ CommandHandler.prototype.updateSample = function(url, sampleId, botReply) {
     });
 };
 
+CommandHandler.prototype.deleteSample = function(sampleId, botReply) {
+    SampleManager.deleteSampleById(sampleId, function(filename) {
+        botReply("Suppression du son '"+sampleId+"' effectuée.");
+    });
+};
 
 CommandHandler.prototype.playSample = function(sampleId, provider, user_id, endPlaying) {
     var self = this;
