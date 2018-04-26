@@ -28,6 +28,7 @@ var config = {};
 config.slack_token = "BOT-TOKEN"; // The auth token of the bot
 config.slack_channels = []; // Array of channel where djbot is present and where he can handle answers
 config.dl_folder = 'music/';
+config.samples_folder = 'samples/';
 
 module.exports = config;
 </pre>
@@ -48,6 +49,13 @@ Launch app:
 * @BOT-ID volume down
 * @BOT-ID volume X (0<X<100)
 * @BOT-ID volume X (0<X<100)
+
+## New commands
+* @BOT-ID install [Youtube URL] [Sound's ID (a-z0-9_)] [Start 00:00] [End 00:00] - Start and End are optional',
+* @BOT-ID list',
+* @BOT-ID send [Sound's ID]',
+* @BOT-ID uninstall [Sound's ID] [Password]',
+* @BOT-ID help'
 
 ## TODO
 * democratic playnext
