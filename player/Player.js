@@ -1,10 +1,14 @@
 var spawn = require('child_process').spawn;
+var os = require('os');
+console.log(os.platform());
 
 function Player() {
 //  console.log('Create Player');
     this.status = 'offair';
     audio = undefined;
 }
+
+const VLC_PATH = os.platform() == 'darwin' ? '/Applications/VLC.app/Contents/MacOS/VLC' : 'vlc';
 
 // Get the sound to play (Download it if not already done)
 Player.prototype.playSound = function(sound, cb) {
@@ -18,7 +22,7 @@ Player.prototype.playSound = function(sound, cb) {
 
             console.log(sound.filename);
 
-            player.audio = spawn('/Applications/VLC.app/Contents/MacOS/VLC', [sound.filename, '--intf' ,'rc', '--play-and-exit']);
+            player.audio = spawn(VLC_PATH, [sound.filename, '--intf' ,'rc', '--play-and-exit']);
 
             player.audio.on('exit', function(code) {
                 console.log('End music ' + sound.filename);
