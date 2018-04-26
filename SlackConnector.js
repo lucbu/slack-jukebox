@@ -50,14 +50,29 @@ function SlackConnector(command_handler) {
                     if (command.startsWith('install') && 'undefined' === typeof message.subtype) {
                         var argsInstall = command.split('install ').pop().split(' ');
 
-                        if (argsInstall.length == 2) {
+                        if (argsInstall.length >= 2) {
                             var url = argsInstall[0].replace('<','').replace('>','');
                             var sampleIdToInstall = argsInstall[1];
 
                             if (sampleIdToInstall.match(/^([a-zA-Z0-9_]{2,})$/)) {
-                                command_handler.updateSample(url, sampleIdToInstall, botReply);
+
+                                if (argsInstall.length == 4) {
+                                    var startAt = argsInstall[2];
+                                    var endAt = argsInstall[3];
+
+                                    if (startAt.match(/^([0-9]{2}):([0-9]{2})$/) && endAt.match(/^([0-9]{2}):([0-9]{2})$/)) {
+                                        command_handler.updateSample(url, sampleIdToInstall, {start: startAt, end: endAt}, botReply);
+                                    }
+                                } else {
+                                    command_handler.updateSample(url, sampleIdToInstall, null, botReply);
+                                }
                             }
                         }
+
+
+
+
+
 
                     } else if (command.startsWith('uninstall') && 'undefined' === typeof message.subtype) {
                         var argsUninstall = command.split('uninstall ').pop().split(' ');

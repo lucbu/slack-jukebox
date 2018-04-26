@@ -1,6 +1,5 @@
 var spawn = require('child_process').spawn;
 var os = require('os');
-console.log(os.platform());
 
 function Player() {
 //  console.log('Create Player');

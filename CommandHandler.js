@@ -12,18 +12,22 @@ function CommandHandler(playlist) {
     };
 }
 
-CommandHandler.prototype.updateSample = function(url, sampleId, botReply) {
+CommandHandler.prototype.updateSample = function(url, sampleId, timeRange, botReply) {
     var sound = new YoutubeSound(url);
+    sound.mountpoint = config.samples_folder;
+    sound.basename = sampleId;
     sound.filename = config.samples_folder + sampleId;
-    botReply("Création du son '"+sampleId+"' en cours...");
+    sound.timeRange = timeRange;
+
+    botReply("Création du son *"+sampleId+"* en cours...");
     sound.downloadFile(function() {
-        botReply("Création du son '"+sampleId+"' terminée !");
+        botReply("Création du son *"+sampleId+"* terminée !");
     });
 };
 
 CommandHandler.prototype.deleteSample = function(sampleId, botReply) {
     SampleManager.deleteSampleById(sampleId, function(filename) {
-        botReply("Suppression du son '"+sampleId+"' effectuée.");
+        botReply("Suppression du son *"+sampleId+"* effectuée.");
     });
 };
 

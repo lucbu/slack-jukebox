@@ -6,6 +6,7 @@ function BaseSound(url) {
     this.length = 0;
     this.checkAndSetUrl(url);
     this.downloading = undefined;
+    this.timeRange = null;
 }
 
 BaseSound.prototype.checkAndSetUrl = function () {

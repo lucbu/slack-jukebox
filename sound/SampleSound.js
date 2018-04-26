@@ -6,7 +6,6 @@ function SampleSound(url, sampleId) {
     // console.log('Create sample sound')
     BaseSound.call(this, url);
     this.title = sampleId;
-    this.filter = { filter: 'audioonly'};
 }
 
 inherits(SampleSound, BaseSound);
