@@ -1,6 +1,7 @@
 var config = {};
 
 config.dl_folder = 'music/';
+config.samples_folder = 'samples/';
 config.allow_playnext = false;
 
 config.slack = {};

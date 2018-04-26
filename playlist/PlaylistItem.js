@@ -3,9 +3,9 @@ function PlaylistItem(sound, provider, user_id, endPlaying) {
     this.sound = sound;
     this.like = 0;
     this.dislike = 0;
-    this.endPlaying = endPlaying
-    this.provider = provider
-    this.user_id = user_id
+    this.endPlaying = endPlaying;
+    this.provider = provider;
+    this.user_id = user_id;
 }
 
 module.exports = PlaylistItem;

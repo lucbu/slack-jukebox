@@ -1,4 +1,6 @@
 var YoutubeSound = require('./sound/YoutubeSound.js');
+var SampleSound = require('./sound/SampleSound.js');
+var SampleManager = require('./SampleManager.js');
 var PlaylistItem = require('./playlist/PlaylistItem.js');
 var os = require('os');
 var config = require('./config.js');
@@ -10,75 +12,111 @@ function CommandHandler(playlist) {
     };
 }
 
+CommandHandler.prototype.updateSample = function(url, sampleId, botReply) {
+    var sound = new YoutubeSound(url);
+    sound.filename = config.samples_folder + sampleId;
+    botReply("Création du son '"+sampleId+"' en cours...");
+    sound.downloadFile(function() {
+        botReply("Création du son '"+sampleId+"' terminée !");
+    });
+};
+
+
+CommandHandler.prototype.playSample = function(sampleId, provider, user_id, endPlaying) {
+    var self = this;
+
+    SampleManager.findSampleById(sampleId, function(filename) {
+        var sound = new SampleSound(filename, sampleId);
+        var item = new PlaylistItem(sound, provider, user_id, endPlaying);
+        self.playlist.flushQueue();
+        self.playlist.addToQueue(item);
+    });
+};
+
+CommandHandler.prototype.listSamples = function(botReply) {
+    SampleManager.listSamples(function(sampleList) {
+        var output = "";
+
+        sampleList.forEach(function(sample) {
+            output += "- "+sample + "\n";
+        });
+
+        botReply(output);
+    });
+};
+
 CommandHandler.prototype.addLike = function (playlist_items) {
-    playlist_items.forEach(function(playlist_item){
+    playlist_items.forEach(function(playlist_item) {
         playlist_item.like = playlist_item.like + 1;
     });
 };
 
 CommandHandler.prototype.removeLike = function (playlist_items) {
-    playlist_items.forEach(function(playlist_item){
-        if(playlist_item.like > 0){
+    playlist_items.forEach(function(playlist_item) {
+        if (playlist_item.like > 0) {
             playlist_item.like = playlist_item.like - 1;
         }
     });
 };
 
 CommandHandler.prototype.addDislike = function (playlist_items) {
-    playlist_items.forEach(function(playlist_item){
+    playlist_items.forEach(function(playlist_item) {
         playlist_item.dislike = playlist_item.dislike + 1;
     });
 };
 
 CommandHandler.prototype.removeDislike = function (playlist_items) {
-    playlist_items.forEach(function(playlist_item){
-        if(playlist_item.dislike > 0){
+    playlist_items.forEach(function(playlist_item) {
+        if (playlist_item.dislike > 0) {
             playlist_item.dislike = playlist_item.dislike - 1;
         }
     });
 };
 
-CommandHandler.prototype.playNext = function(){
-    if('undefined' !== typeof config.allow_playnext && config.allow_playnext){
-        console.log('playnext')
+CommandHandler.prototype.playNext = function() {
+    if ('undefined' !== typeof config.allow_playnext && config.allow_playnext) {
+        console.log('playnext');
         this.playlist.playNext(true);
     }
-}
+};
 
 CommandHandler.prototype.addUrlToPlaylist = function (url, provider, user_id, endPlaying) {
     var sound = undefined;
-    if(url.match(this.url_regex['youtube']) !== null){
+
+    if (url.match(this.url_regex['youtube']) !== null) {
         try {
-            var sound = new YoutubeSound(url);
-        }catch (err) {
+            sound = new YoutubeSound(url);
+        } catch (err) {
             console.log(url + ' is not good')
         }
     }
-    if('undefined' !== typeof sound) {
+
+    if ('undefined' !== typeof sound) {
         var item = new PlaylistItem(sound, provider, user_id, endPlaying);
         this.playlist.addToQueue(item);
         return item;
     }
+
     return null;
 };
 
 CommandHandler.prototype.pause = function() {
-    if('undefined' !== typeof this.playlist.player.audio){
+    if ('undefined' !== typeof this.playlist.player.audio) {
         this.playlist.player.audio.stdin.write('pause' + os.EOL);
     }
 };
 
 CommandHandler.prototype.play = function() {
-    if('undefined' !== typeof this.playlist.player.audio){
+    if ('undefined' !== typeof this.playlist.player.audio) {
         this.playlist.player.audio.stdin.write('play' + os.EOL);
     }
 };
 
 CommandHandler.prototype.volume = function(volume) {
-    if('undefined' !== typeof this.playlist.player.audio){
-        if(!isNaN(volume)){
+    if ('undefined' !== typeof this.playlist.player.audio) {
+        if (!isNaN(volume)) {
             var vol = parseInt(volume);
-            if(vol >= 0 && vol <= 256){
+            if (vol >= 0 && vol <= 256) {
                 this.playlist.player.audio.stdin.write('volume ' + vol + os.EOL);
             }
         } else if (volume == 'up') {
@@ -91,15 +129,15 @@ CommandHandler.prototype.volume = function(volume) {
 
 CommandHandler.prototype.deleteFromPlaylist = function(items, cb) {
     var self = this;
-    items.forEach(function(item){
+    items.forEach(function(item) {
         var index = self.playlist.queue.indexOf(item);
         if (index > -1) {
             self.playlist.queue.splice(index, 1);
-            if('undefined' !== cb){
+            if ('undefined' !== cb) {
                 cb()
             }
         }
     });
-}
+};
 
 module.exports = CommandHandler;
