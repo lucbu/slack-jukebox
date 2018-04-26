@@ -54,6 +54,23 @@ CommandHandler.prototype.listSamples = function(botReply) {
     });
 };
 
+CommandHandler.prototype.helpForSamples = function(botReply) {
+    var helpItems = [
+        '1. @Jukebox install [Youtube URL] [Identifiant du son (a-z0-9_)] [Début 00:00] [Fin 00:00] - Début et Fin sont facultatifs',
+        '2. @Jukebox list',
+        '3. @Jukebox send [Identifiant du son]',
+        '4. @Jukebox uninstall [Identifiant du son] [Mot de passe]',
+        '5. @Jukebox help'
+    ];
+    var output = "";
+
+    helpItems.forEach(function(helpItem) {
+        output += "" + helpItem + "\n";
+    });
+
+    botReply(output);
+};
+
 CommandHandler.prototype.addLike = function (playlist_items) {
     playlist_items.forEach(function(playlist_item) {
         playlist_item.like = playlist_item.like + 1;

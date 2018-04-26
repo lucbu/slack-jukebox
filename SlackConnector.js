@@ -69,11 +69,6 @@ function SlackConnector(command_handler) {
                             }
                         }
 
-
-
-
-
-
                     } else if (command.startsWith('uninstall') && 'undefined' === typeof message.subtype) {
                         var argsUninstall = command.split('uninstall ').pop().split(' ');
 
@@ -98,6 +93,8 @@ function SlackConnector(command_handler) {
 
                     } else if (command.startsWith('list') && 'undefined' === typeof message.subtype) {
                         command_handler.listSamples(botReply);
+                    }  else if (command.startsWith('help') && 'undefined' === typeof message.subtype) {
+                        command_handler.helpForSamples(botReply);
                     } else if (command.startsWith('add') && 'undefined' === typeof message.subtype) {
                         var urls = command.split(' add ').pop().split(' ');
                         urls.forEach(function(value) {
