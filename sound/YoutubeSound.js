@@ -47,7 +47,6 @@ YoutubeSound.prototype.downloadFile = function(cb) {
     console.log('### Start downloading "'+ file +'" from "' + this.url + '"');
     sound.file = file;
 
-    /*
     horizon.getInfo(this.url, function(err, infos) {
         sound.title = infos.videoName;
 
@@ -55,15 +54,17 @@ YoutubeSound.prototype.downloadFile = function(cb) {
             sound.length = parseInt(infos.videoTimeSec);
         }
     });
-    */
 
-    ytdl.getInfo(this.url, this.ytdlOpts, function(err, infos) {
+    /*
+
+     ytdl.getInfo(this.url, this.ytdlOpts, function(err, infos) {
         sound.title = infos.title;
 
         if (!isNaN(infos.length_seconds)) {
             sound.length = parseInt(infos.length_seconds);
         }
     });
+     */
 
     /*
     this.downloading = ytdl(this.url, this.ytdlOpts);
