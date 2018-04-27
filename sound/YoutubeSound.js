@@ -8,8 +8,8 @@ var horizon = require('horizon-youtube-mp3');
 
 function YoutubeSound(url) {
     // console.log('Create youtube sound')
-    BaseSound.call(this, url);
     this.mountpoint = config.dl_folder;
+    BaseSound.call(this, url);
     this.ytdlOpts = { filter: 'audioonly'};
 }
 
