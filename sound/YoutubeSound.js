@@ -36,7 +36,7 @@ YoutubeSound.prototype.checkAndSetUrl = function(url) {
     }
 
     this.url = url;
-    this.basename = "/youtube-" + match[5] + "-" + new Date().getTime() + ".mp4";
+    this.basename = "youtube-" + match[5] + "-" + new Date().getTime() + ".mp4";
     this.filename = this.mountpoint + this.basename;
 };
 
@@ -47,6 +47,7 @@ YoutubeSound.prototype.downloadFile = function(cb) {
     console.log('### Start downloading "'+ file +'" from "' + this.url + '"');
     sound.file = file;
 
+    /*
     horizon.getInfo(this.url, function(err, infos) {
         if (err) {
             console.log(err);
@@ -60,17 +61,22 @@ YoutubeSound.prototype.downloadFile = function(cb) {
             }
         }
     });
+    */
 
-    /*
 
      ytdl.getInfo(this.url, this.ytdlOpts, function(err, infos) {
-        sound.title = infos.title;
+         if (err) {
+             console.log(err);
+         } else {
+             if (typeof infos !== "undefined") {
+                 sound.title = infos.title;
 
-        if (!isNaN(infos.length_seconds)) {
-            sound.length = parseInt(infos.length_seconds);
-        }
+                 if (!isNaN(infos.length_seconds)) {
+                     sound.length = parseInt(infos.length_seconds);
+                 }
+             }
+         }
     });
-     */
 
     /*
     this.downloading = ytdl(this.url, this.ytdlOpts);
