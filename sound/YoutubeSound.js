@@ -48,10 +48,16 @@ YoutubeSound.prototype.downloadFile = function(cb) {
     sound.file = file;
 
     horizon.getInfo(this.url, function(err, infos) {
-        sound.title = infos.videoName;
+        if (err) {
+            console.log(err);
+        } else {
+            if (typeof infos !== "undefined") {
+                sound.title = infos.videoName;
 
-        if (!isNaN(infos.videoTimeSec)) {
-            sound.length = parseInt(infos.videoTimeSec);
+                if (!isNaN(infos.videoTimeSec)) {
+                    sound.length = parseInt(infos.videoTimeSec);
+                }
+            }
         }
     });
 
