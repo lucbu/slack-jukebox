@@ -25,6 +25,6 @@
     "fs": "0.0.1-security",
     "horizon-youtube-mp3": "^1.8.1",
     "util": "^0.10.3",
-    "ytdl-core": "^0.12.1"
+    "ytdl-core": "^0.20.1"
   }
 }
