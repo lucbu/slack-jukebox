@@ -7,37 +7,48 @@ function Playlist(player) {
     this.playing = undefined;
 }
 
+Playlist.prototype.flushQueue = function() {
+    this.queue = [];
+};
+
 Playlist.prototype.addToQueue = function (playlist_item, cb) {
     this.queue.push(playlist_item);
-    if(this.queue.length == 1){
+
+    if (this.queue.length == 1) {
         this.playNext();
     } else {
         playlist_item.sound.downloadFile();
     }
-}
+};
 
-Playlist.prototype.playNext = function(force){
-    if('undefined' === typeof force){
-        force=false;
+Playlist.prototype.playNext = function(force) {
+    if ('undefined' === typeof force) {
+        force = false;
     }
-    if(force){
-        if('undefined' !== typeof this.player.audio){
+
+    if (force) {
+        if ('undefined' !== typeof this.player.audio) {
             this.player.audio.stdin.write('quit' + os.EOL);
         }
         this.player.status = 'offair'
-    } else{
+    } else {
         var playlist = this;
         var next = this.queue[0];
-        if('undefined' !== typeof next){
-            if(next.like >= next.dislike){
+
+        if ('undefined' !== typeof next) {
+            if (next.like >= next.dislike) {
                 this.playing = next;
-                this.player.playSound(next.sound, function(){
+                var self = this;
+
+                this.player.playSound(next.sound, function() {
                     playlist.queue.shift();
                     next.sound.deleteFile();
-                    if('undefined' !== next.endPlaying){
+
+                    if ('undefined' !== next.endPlaying) {
                         next.endPlaying()
                     }
-                    this.playing = undefined;
+
+                    self.playing = undefined;
                     playlist.playNext();
                 });
             } else {
@@ -47,15 +58,17 @@ Playlist.prototype.playNext = function(force){
             }
         }
     }
-}
+};
 
-Playlist.prototype.totalLength = function(){
+Playlist.prototype.totalLength = function() {
     var total_length = 0;
+
     for (var i in this.queue) {
-        item = this.queue[i]
+        item = this.queue[i];
         total_length += item.sound.length;
     }
+
     return total_length;
-}
+};
 
 module.exports = Playlist;
