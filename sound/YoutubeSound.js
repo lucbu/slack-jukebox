@@ -92,7 +92,7 @@ YoutubeSound.prototype.downloadFile = function(cb) {
                     '-i',
                     file,
                     '-acodec',
-                    'copy',
+                    config.samples_codec,
                     '-ss',
                     timeRange.start,
                     '-t',
