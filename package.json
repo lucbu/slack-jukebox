@@ -23,7 +23,6 @@
   "dependencies": {
     "@slack/client": "^3.9.0",
     "fs": "0.0.1-security",
-    "sox-audio": "^0.3.0",
     "util": "^0.10.3",
     "ytdl-core": "^0.20.1"
   }
