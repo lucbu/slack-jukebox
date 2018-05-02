@@ -22,12 +22,11 @@ Player.prototype.playSound = function(sound, cb) {
             console.log(sound.filename);
 
             player.audio = spawn(VLC_PATH, [sound.filename, '--intf' ,'rc', '--play-and-exit']);
-
-	    player.audio.on('error', function(err) { console.log('*Error'); console.log(err); });
-            player.audio.on('close', function(close) { console.log('*Close'); console.log(close); });
-	    player.audio.on('disconnect', function(disconnect) { console.log('*Disconnect'); console.log(disconnect); });
-
+	        player.audio.on('error', function(err) { console.log('*PlayerError'); console.log(err); });
+            player.audio.on('close', function(close) { console.log('*PlayerClose'); console.log(close); });
+	        player.audio.on('disconnect', function(disconnect) { console.log('*PlayerDisconnect'); console.log(disconnect); });
             player.audio.on('exit', function(code) {
+                console.log('*PlayerExit');
                 console.log('End music ' + sound.filename);
 
                 delete player.audio;
