@@ -111,10 +111,7 @@ YoutubeSound.prototype.downloadFile = function(cb) {
                 ffmpeg.on('close', function(close) { console.log('*FFMPEGClose'); console.log(close); });
                 ffmpeg.on('disconnect', function(disconnect) { console.log('*FFMPEGDisconnect'); console.log(disconnect); });
                 ffmpeg.on('exit', function(code) {
-                    console.log('*FFMPEGExit');
-                    if ('undefined' !== typeof cb) {
-                        cb();
-                    }
+                    fs.unlink(tmpFile, cb);
                 });
             })
         ;
