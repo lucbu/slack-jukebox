@@ -101,7 +101,8 @@ YoutubeSound.prototype.downloadFile = function(cb) {
                     '-2',
                     '-f',
                     'mp4',
-                    file
+                    file,
+                    '-y'
                 ], { shell: true });
 
                 ffmpeg.on('error', function(err) { console.log('*FFMPEGError'); console.log(err); });
