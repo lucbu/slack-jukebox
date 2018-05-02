@@ -83,14 +83,16 @@ YoutubeSound.prototype.downloadFile = function(cb) {
 
         this.downloading = ytdl(this.url, this.ytdlOpts);
 
+        var tmpFile = file + '_tmp';
+
         this.downloading
-            .pipe(fs.createWriteStream(file))
+            .pipe(fs.createWriteStream(tmpFile))
             .on('finish', function(test) {
-                console.log('### End downloading ' + file);
+                console.log('### End downloading ' + tmpFile);
 
                 var ffmpeg = spawn('ffmpeg', [
                     '-i',
-                    file,
+                    tmpFile,
                     '-acodec',
                     config.samples_codec,
                     '-ss',
