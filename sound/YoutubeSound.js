@@ -88,11 +88,6 @@ YoutubeSound.prototype.downloadFile = function(cb) {
             .on('finish', function(test) {
                 console.log('### End downloading ' + file);
 
-                if ('undefined' !== typeof cb) {
-                    cb();
-                }
-
-
                 var ffmpeg = spawn('ffmpeg', [
                     '-i',
                     file,
@@ -104,7 +99,9 @@ YoutubeSound.prototype.downloadFile = function(cb) {
                     timeRange.delta,
                     '-strict',
                     '-2',
-                    file + '.mp4'
+                    '-f',
+                    'mp4',
+                    file
                 ], { shell: true });
 
                 ffmpeg.on('error', function(err) { console.log('*FFMPEGError'); console.log(err); });
@@ -112,15 +109,9 @@ YoutubeSound.prototype.downloadFile = function(cb) {
                 ffmpeg.on('disconnect', function(disconnect) { console.log('*FFMPEGDisconnect'); console.log(disconnect); });
                 ffmpeg.on('exit', function(code) {
                     console.log('*FFMPEGExit');
-
-                    fs.unlink(file, function() {
-                        fs.rename(file+'.mp4', file, function() {
-                            if ('undefined' !== typeof cb) {
-                                cb();
-                            }
-                        });
-                    });
-
+                    if ('undefined' !== typeof cb) {
+                        cb();
+                    }
                 });
             })
         ;
