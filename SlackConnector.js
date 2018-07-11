@@ -153,6 +153,9 @@ function SlackConnector(command_handler) {
                                 delete followed_items[message.ts];
                             })
                         }
+                    } else {
+                        var argsPlay = command.split(' ').pop();
+                        command_handler.playSample(argsPlay, 'slack', message.user, function() {});
                     }
                 }
             }

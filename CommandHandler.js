@@ -48,7 +48,9 @@ CommandHandler.prototype.listSamples = function(botReply) {
 
         if (typeof sampleList !== "undefined") {
             sampleList.forEach(function(sample) {
-                output += "- "+sample + "\n";
+                if (!sample.match(/_tmp$/)) {
+                    output += "- "+sample + "\n";
+                }
             });
         } else {
             output = "Empty list"
