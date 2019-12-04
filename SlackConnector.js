@@ -1,8 +1,6 @@
-var RtmClient = require('@slack/client').RtmClient;
-var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
-var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+const { RTMClient } = require('@slack/rtm-api');
 var config = require('./config.js');
-var Helper = require('./Helper.js');
+const Helper = require('./Helper.js');
 var helper = new Helper();
 
 
@@ -11,19 +9,19 @@ function SlackConnector(command_handler) {
     var bot_token = config.slack.token;
     var channels = 'undefined' !== typeof config.slack.channels ? config.slack.channels : [];
     var aliases = 'undefined' !== typeof config.slack.aliases ? config.slack.aliases : {};
-    var rtm = new RtmClient(bot_token);
+    var rtm = new RTMClient(bot_token);
     var id = undefined;
     var logtime = undefined;
     var followed_items = {};
 
-    rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-        console.log('Logged in as '+rtmStartData.self.name+' of team '+rtmStartData.team.name+', but not yet connected to a channel');
+    rtm.on('authenticated', function (rtmStartData) {
+        console.log('Logged in as '+rtmStartData.self.name+' of team '+rtmStartData.team.name);
         id = rtmStartData.self.id;
     });
 
     // wait 3sec for not getting last message
     setTimeout(function() {
-        rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+        rtm.on('message', function (message) {
             //console.log(message)
             if (channels.length == 0 || channels.indexOf(message.channel) != -1) {
                 // The prefix is the bot's id
@@ -162,7 +160,7 @@ function SlackConnector(command_handler) {
         })
     }, 3000);
 
-    rtm.on(RTM_EVENTS.REACTION_ADDED, function (reaction) {
+    rtm.on('reaction_added', function (reaction) {
         if (reaction.item.type == 'message') {
             if (reaction.item.ts in followed_items) {
                 if (reaction.reaction == '+1') {
@@ -173,7 +171,7 @@ function SlackConnector(command_handler) {
             }
         }
     });
-    rtm.on(RTM_EVENTS.REACTION_REMOVED, function (reaction) {
+    rtm.on('reaction_removed', function (reaction) {
         if (reaction.item.type == 'message') {
             if (reaction.item.ts in followed_items) {
                 if (reaction.reaction == '+1') {
@@ -185,7 +183,12 @@ function SlackConnector(command_handler) {
         }
     });
 
-    rtm.start(false);
+
+(async () => {
+  // Connect to Slack
+  const { self, team } = await rtm.start();
+})();
+
 }
 
 module.exports = SlackConnector;
