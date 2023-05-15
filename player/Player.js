@@ -12,7 +12,7 @@ const VLC_PATH = os.platform() == 'darwin' ? '/Applications/VLC.app/Contents/Mac
 // Get the sound to play (Download it if not already done)
 Player.prototype.playSound = function(sound, cb) {
     var player = this;
-
+    console.log("Play sound...");
     if (this.status !== 'onair') {
         sound.getFile(function() {
             console.log('Start music "' + sound.title + '"');
@@ -21,6 +21,7 @@ Player.prototype.playSound = function(sound, cb) {
 
             console.log(sound.filename);
 
+	    console.log(VLC_PATH, [sound.filename, '--intf' ,'rc', '--play-and-exit']);
             player.audio = spawn(VLC_PATH, [sound.filename, '--intf' ,'rc', '--play-and-exit']);
 	        player.audio.on('error', function(err) { console.log('*PlayerError'); console.log(err); });
             player.audio.on('close', function(close) { console.log('*PlayerClose'); console.log(close); });

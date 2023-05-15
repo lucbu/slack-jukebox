@@ -25,6 +25,6 @@
     "@slack/rtm-api": "^5.0.3",
     "fs": "0.0.1-security",
     "util": "^0.12.1",
-    "ytdl-core": "^1.0.3"
+    "ytdl-core": "^4.11.4"
   }
 }

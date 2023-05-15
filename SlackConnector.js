@@ -22,7 +22,7 @@ function SlackConnector(command_handler) {
     // wait 3sec for not getting last message
     setTimeout(function() {
         rtm.on('message', function (message) {
-            //console.log(message)
+            console.log(message)
             if (channels.length == 0 || channels.indexOf(message.channel) != -1) {
                 // The prefix is the bot's id
                 var prefix = '<@'+id+'>';
@@ -33,10 +33,14 @@ function SlackConnector(command_handler) {
                     text = message.previous_message.text;
                 }
 
-
                 var botReply = function(msgToSend) {
                     rtm.sendMessage(msgToSend, message.channel);
                 };
+
+		if (message.channel == 'DABKFF5J4') {
+			console.log("Private message");
+			text = prefix+" "+message.text;
+		}
 
                 if ('undefined' !== typeof text && text.startsWith(prefix)) {
                     // Getting the command in good shape
@@ -47,6 +51,7 @@ function SlackConnector(command_handler) {
 
                     if (command.startsWith('install') && 'undefined' === typeof message.subtype) {
                         var argsInstall = command.split('install ').pop().split(' ');
+                        console.log("Install command");
 
                         if (argsInstall.length >= 2) {
                             var url = argsInstall[0].replace('<','').replace('>','');
@@ -68,6 +73,7 @@ function SlackConnector(command_handler) {
                         }
 
                     } else if (command.startsWith('uninstall') && 'undefined' === typeof message.subtype) {
+			console.log("Uninstall command");
                         var argsUninstall = command.split('uninstall ').pop().split(' ');
 
                         if (argsUninstall.length == 2) {
@@ -80,6 +86,7 @@ function SlackConnector(command_handler) {
                         }
 
                     }  else if (command.startsWith('send') && 'undefined' === typeof message.subtype) {
+			console.log("Send command");
                         var argsPlay = command.split('send ').pop().split(' ');
 
                         if (argsPlay.length == 1) {
@@ -90,7 +97,9 @@ function SlackConnector(command_handler) {
                         }
 
                     } else if (command.startsWith('list') && 'undefined' === typeof message.subtype) {
+                        console.log("List command");
                         command_handler.listSamples(botReply);
+                        console.log("Help command");
                     }  else if (command.startsWith('help') && 'undefined' === typeof message.subtype) {
                         command_handler.helpForSamples(botReply);
                     } else if (command.startsWith('add') && 'undefined' === typeof message.subtype) {
